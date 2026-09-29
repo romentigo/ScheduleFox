@@ -13,26 +13,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
     message: 'Такой студент уже существует',
     ignoreNull: 'middle_name'
 )]
-#[UniqueEntity(
-    fields: ['email'],
-    message: 'Такой email уже существует',
-)]
-#[UniqueEntity(
-    fields: ['phone_number'],
-    message: 'Такой номер телефона уже существует',
-)]
+
 
 #[ORM\UniqueConstraint(
     name: 'UNIQ_student_name',
     columns: ['first_name', 'last_name', 'middle_name', 'birthdate']
-)]
-#[ORM\UniqueConstraint(
-    name: 'UNIQ_student_email',
-    columns: ['email']
-)]
-#[ORM\UniqueConstraint(
-    name: 'UNIQ_student_phoneNumber',
-    columns: ['phone_number']
 )]
 
 class Student
@@ -63,6 +48,9 @@ class Student
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTime $birthdate = null;
+
+    #[ORM\OneToOne(mappedBy: 'student', cascade: ['persist', 'remove'])]
+    private ?Contact $contact = null;
 
     public function getId(): ?int
     {
@@ -149,6 +137,28 @@ class Student
     public function setBirthdate(\DateTime $birthdate): static
     {
         $this->birthdate = $birthdate;
+
+        return $this;
+    }
+
+    public function getContact(): ?Contact
+    {
+        return $this->contact;
+    }
+
+    public function setContact(?Contact $contact): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($contact === null && $this->contact !== null) {
+            $this->contact->setStudent(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($contact !== null && $contact->getStudent() !== $this) {
+            $contact->setStudent($this);
+        }
+
+        $this->contact = $contact;
 
         return $this;
     }

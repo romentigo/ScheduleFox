@@ -15,27 +15,12 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
     message: 'Такой преподаватель уже существует',
     ignoreNull: 'middle_name'
 )]
-#[UniqueEntity(
-    fields: ['email'],
-    message: 'Такой email уже существует',
-)]
-#[UniqueEntity(
-    fields: ['phone_number'],
-    message: 'Такой номер телефона уже существует',
-)]
 
 #[ORM\UniqueConstraint(
     name: 'UNIQ_teacher',
     columns: ['first_name', 'last_name', 'middle_name', 'birthdate']
 )]
-#[ORM\UniqueConstraint(
-    name: 'UNIQ_teacher_email',
-    columns: ['email']
-)]
-#[ORM\UniqueConstraint(
-    name: 'UNIQ_teacher_phoneNumber',
-    columns: ['phone_number']
-)]
+
 
 class Teacher
 {
@@ -81,6 +66,9 @@ class Teacher
      */
     #[ORM\OneToMany(targetEntity: Pair::class, mappedBy: 'teacher')]
     private Collection $pairs;
+
+    #[ORM\OneToOne(mappedBy: 'teacher', cascade: ['persist', 'remove'])]
+    private ?Contact $contact = null;
 
     public function __construct()
     {
@@ -238,6 +226,28 @@ class Teacher
                 $pair->setTeacher(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getContact(): ?Contact
+    {
+        return $this->contact;
+    }
+
+    public function setContact(?Contact $contact): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($contact === null && $this->contact !== null) {
+            $this->contact->setTeacher(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($contact !== null && $contact->getTeacher() !== $this) {
+            $contact->setTeacher($this);
+        }
+
+        $this->contact = $contact;
 
         return $this;
     }
