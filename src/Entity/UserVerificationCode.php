@@ -15,10 +15,10 @@ class UserVerificationCode
     private ?int $id = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(unique: true, nullable: false)]
+    #[ORM\JoinColumn(nullable: false)]
     private ?User $account = null;
 
-    #[ORM\Column(length: 255, unique: true)]
+    #[ORM\Column(length: 255)]
     private ?string $type = null;
 
     #[ORM\Column(length: 255)]

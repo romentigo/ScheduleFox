@@ -8,17 +8,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-#[UniqueEntity(
-    fields: ['contact'],
-    message: 'Такие контакты уже привязаны к другому пользователю',
-)]
-
-#[ORM\UniqueConstraint(
-    name: 'UNIQ_contact',
-    columns: ['contact']
-)]
-
-
 class User
 {
     #[ORM\Id]

@@ -11,11 +11,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: StudentsGroupRepository::class)]
 #[UniqueEntity(
-    fields: ['course_num', 'group_num', 'speciality_id', 'start_date']
+    fields: ['course_num', 'group_num', 'speciality_id']
 )]
 #[ORM\UniqueConstraint(
     name: 'UNIQ_studGroup',
-    columns: ['course_num', 'group_num', 'speciality_id', 'start_date']
+    columns: ['course_num', 'group_num', 'speciality_id']
 )]
 
 class StudentsGroup

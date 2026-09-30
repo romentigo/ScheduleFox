@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
     message: 'Этот преподаватель уже занят в это время.'
 )]
 #[UniqueEntity(
-    fields: ['stud_group_id', 'pair_number_id', 'day_id', 'week_id'],
+    fields: ['students_group_id', 'pair_number_id', 'day_id', 'week_id'],
     message: 'Эта группа уже занята в это время.'
 )]
 #[UniqueEntity(
@@ -26,7 +26,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 )]
 #[ORM\UniqueConstraint(
     name: 'UNIQ_pair_stud_group',
-    columns: ['stud_group_id', 'pair_number_id', 'day_id', 'week_id']
+    columns: ['students_group_id', 'pair_number_id', 'day_id', 'week_id']
 )]
 #[ORM\UniqueConstraint(
     name: 'UNIQ_pair_classroom',
