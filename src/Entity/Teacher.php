@@ -55,12 +55,6 @@ class Teacher
     #[ORM\JoinColumn(nullable: false)]
     private ?Degree $degree = null;
 
-    #[ORM\Column]
-    private ?bool $is_foreign = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $foreign_university = null;
-
     /**
      * @var Collection<int, Pair>
      */
@@ -69,6 +63,9 @@ class Teacher
 
     #[ORM\OneToOne(mappedBy: 'teacher', cascade: ['persist', 'remove'])]
     private ?Contact $contact = null;
+
+    #[ORM\ManyToOne(inversedBy: 'teachers')]
+    private ?ForeignUniversity $foreign_university = null;
 
     public function __construct()
     {
@@ -116,30 +113,6 @@ class Teacher
         return $this;
     }
 
-    public function getPhoneNumber(): ?string
-    {
-        return $this->phone_number;
-    }
-
-    public function setPhoneNumber(string $phone_number): static
-    {
-        $this->phone_number = $phone_number;
-
-        return $this;
-    }
-
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(?string $email): static
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
     public function getDepartment(): ?Department
     {
         return $this->department;
@@ -172,30 +145,6 @@ class Teacher
     public function setDegree(?Degree $degree): static
     {
         $this->degree = $degree;
-
-        return $this;
-    }
-
-    public function isForeign(): ?bool
-    {
-        return $this->is_foreign;
-    }
-
-    public function setIsForeign(bool $is_foreign): static
-    {
-        $this->is_foreign = $is_foreign;
-
-        return $this;
-    }
-
-    public function getForeignUniversity(): ?string
-    {
-        return $this->foreign_university;
-    }
-
-    public function setForeignUniversity(?string $foreign_university): static
-    {
-        $this->foreign_university = $foreign_university;
 
         return $this;
     }
@@ -248,6 +197,18 @@ class Teacher
         }
 
         $this->contact = $contact;
+
+        return $this;
+    }
+
+    public function getForeignUniversity(): ?ForeignUniversity
+    {
+        return $this->foreign_university;
+    }
+
+    public function setForeignUniversity(?ForeignUniversity $foreign_university): static
+    {
+        $this->foreign_university = $foreign_university;
 
         return $this;
     }

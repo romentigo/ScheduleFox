@@ -36,12 +36,6 @@ class Student
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $middle_name = null;
 
-    #[ORM\Column(length: 25, nullable: true)]
-    private ?string $phone_number = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $email = null;
-
     #[ORM\ManyToOne(inversedBy: 'students')]
     #[ORM\JoinColumn(nullable: false)]
     private ?StudentsGroup $students_group = null;
@@ -89,30 +83,6 @@ class Student
     public function setMiddleName(?string $middle_name): static
     {
         $this->middle_name = $middle_name;
-
-        return $this;
-    }
-
-    public function getPhoneNumber(): ?string
-    {
-        return $this->phone_number;
-    }
-
-    public function setPhoneNumber(?string $phone_number): static
-    {
-        $this->phone_number = $phone_number;
-
-        return $this;
-    }
-
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(?string $email): static
-    {
-        $this->email = $email;
 
         return $this;
     }
